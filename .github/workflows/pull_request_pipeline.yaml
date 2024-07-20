@@ -30,13 +30,12 @@ jobs:
     - name: Run Flask app in the background
       run: |
         nohup python app.py &
-        sleep 10  # Increased wait time for the server to start
+        sleep 5  # wait for the server to start
 
     - name: Test client script
       run: |
         python client.py
 
     - name: Run email script if tests pass
-      if: success()
       run: |
         python send_email.py
