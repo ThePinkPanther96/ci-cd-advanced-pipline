@@ -4,13 +4,13 @@ from email.mime.text import MIMEText
 
 subject = "Advanced pipelibe"
 body = "Tests completed successfully"
-sender = os.environ.get('SENDER')    
+sender = os.environ.get('SENDER_EMAIL')    
 recipients = "gal8156@gmail.com"  
-password = os.environ.get('RECIPIENT')  
+password = os.environ.get('RECIPIENT_PASWD')  
 
 def send_email(subject, body, sender, recipients, password):
     if not sender or not password:
-        print("Environment variables for GMAIL_USER or GMAIL_PASS are not set.")
+        print("Environment variables for RECIPIENT or SENDER are not set.")
         return
 
     msg = MIMEText(body)
