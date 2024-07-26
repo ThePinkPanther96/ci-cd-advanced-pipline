@@ -5,7 +5,7 @@ from email.mime.text import MIMEText
 subject = "Advanced pipelibe"
 body = "Tests completed successfully"
 sender = os.environ.get('SENDER_EMAIL')    
-recipients = "gal8156@gmail.com"  
+recipients = os.environ.get('RECIPIENT_EMAIL') 
 password = os.environ.get('RECIPIENT_PASWD')  
 
 def send_email(subject, body, sender, recipients, password):
