@@ -6,13 +6,8 @@ on:
       - main
 
 jobs:
-  test-and-email:
+  test-code:
     runs-on: ubuntu-latest
-
-    env:
-      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
-      RECIPIENT_PASWD: ${{ secrets.RECIPIENT_PASWD }}
-      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
 
     steps:
     - name: Checkout code
@@ -37,10 +32,47 @@ jobs:
       run: |
         python client.py
 
+  check-variables:
+    runs-on: ubuntu-latest
+    needs: test-code
+
+    env:
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      RECIPIENT_PASWD: ${{ secrets.RECIPIENT_PASWD }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
     - name: Check environment variables
       run: |
         echo "SENDER_EMAIL: $SENDER_EMAIL"
         echo "RECIPIENT_PASWD: $RECIPIENT_PASWD"
+        echo "RECIPIENT_EMAIL: $RECIPIENT_EMAIL"
+
+  send-email:
+    runs-on: ubuntu-latest
+    needs: [test-code, check-variables]
+
+    env:
+      SENDER_EMAIL: ${{ secrets.SENDER_EMAIL }}
+      RECIPIENT_PASWD: ${{ secrets.RECIPIENT_PASWD }}
+      RECIPIENT_EMAIL: ${{ secrets.RECIPIENT_EMAIL }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
 
     - name: Run email script if tests pass
       run: |
